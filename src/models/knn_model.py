@@ -3,7 +3,8 @@ import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.metrics import *
-from sklearn.metrics._classification import accuracy_score, log_loss
+from sklearn.metrics._classification import log_loss
+from .model_utils import predict_and_plot_confusion_matrix
 
 
 def knn_model(train_x_responseCoding, test_x_responseCoding, cv_x_responseCoding, train_y, cv_y, y_train, y_cv, y_test):

@@ -2,11 +2,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.calibration import CalibratedClassifierCV
-from sklearn.metrics import *
+# from sklearn.metrics import *
 from sklearn.metrics._classification import accuracy_score, log_loss
+from .model_utils import plot_confusion_matrix
 
 
-def naive_bayes(train_x_onehotCoding, test_x_onehotCoding, cv_x_onehotCoding, train_y, test_y, cv_y, y_train,y_test, y_cv):
+def naive_bayes(train_x_onehotCoding, test_x_onehotCoding, cv_x_onehotCoding, train_y, cv_y, y_train, y_test, y_cv):
     alpha = [0.00001, 0.0001, 0.001, 0.1, 1, 10, 100, 1000]
     cv_log_error_array = []
     for i in alpha:
