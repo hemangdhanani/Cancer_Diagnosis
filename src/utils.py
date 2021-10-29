@@ -1,17 +1,20 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.model_selection import train_test_split
 
 
-def plot_y_distribution(df):
-    class_distribution = df['Class'].value_counts().sort_index()
+def plot_y_distribution(df, name):
+    # class_distribution = df['Class'].value_counts().sort_index()
+    class_distribution = df
     my_colors = 'rgbkymc'
     class_distribution.plot(kind='bar')
     plt.xlabel('Class')
     plt.ylabel('Data points per Class')
-    plt.title('Distribution of yi in train data')
+    plt.title(f"Distribution of yi in {name} data")
     plt.grid()
     plt.show()
+    plt.savefig('/plots_generated' + name + '.png')
 
     # -(train_class_distribution.values): the minus sign will give us in decreasing order
     sorted_yi = np.argsort(-class_distribution.values)
@@ -62,3 +65,16 @@ def response_code(train_df, test_df, cv_df):
     # cross validation gene feature
     cv_variation_feature_responseCoding = np.array(get_gv_feature(alpha, "Variation", cv_df))
     return (train_variation_feature_responseCoding, test_variation_feature_responseCoding, cv_variation_feature_responseCoding)
+
+
+def train_test_data(result):
+    y_true = result['Class'].values
+    result.Gene = result.Gene.str.replace('\s+', '_')
+    result.Variation = result.Variation.str.replace('\s+', '_')
+
+    result_dict = dict()
+    result_dict['X_train'], result_dict['test_df'], result_dict['y_train'] ,result_dict['y_test']  = train_test_split(result, y_true, stratify=y_true, test_size=0.2)
+
+    result_dict['train_df'],result_dict['cv_df'] ,result_dict['y_train'] ,result_dict['y_cv']  = train_test_split(result_dict['X_train'], result_dict['y_train'], stratify=result_dict['y_train'], test_size=0.2)
+
+    return result_dict

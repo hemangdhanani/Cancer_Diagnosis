@@ -1,9 +1,10 @@
 import nltk
 import re
 import time
-stopwords = nltk.download('stopwords')
 
-stop_words = set(stopwords.words('english'))
+#stopwords_check = nltk.download('stopwords')
+
+stop_words = nltk.corpus.stopwords.words('english')
 
 
 def nlp_preprocessing(total_text, data_text, index, column):
@@ -28,14 +29,14 @@ def nlp_preprocessing(total_text, data_text, index, column):
         raise TypeError("found total text as a int.")
 
 def nlp_runner(data_text):
-    start_time = time.clock()
+    start_time = time.time()
     result_text = data_text
     for index, row in data_text.iterrows():
         if type(row['TEXT']) is str:
             result_text = nlp_preprocessing(row['TEXT'], result_text,index, 'TEXT')
         else:
-            print("there is no text description for id:", index)
-    print('Time took for preprocessing the text :', time.clock() - start_time, "seconds")
+            print("There is no text description for id:", index)
+    print('Time took for preprocessing the text :', time.time() - start_time, "seconds")
     return result_text
 
- # call nlp_runner
+ # call nlp_runner process

@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.msk-redefining-cancer-treatment/
+.training_text
+.training_variants
