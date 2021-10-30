@@ -2,7 +2,12 @@ from src.download_dataset import download_dataset
 from src.read_datafile import read_data
 from src.preprocess_text import nlp_runner
 from src.utils import train_test_data, plot_y_distribution
+from src.utils import onehot_encode
+from src.utils import onehot_encode_text
 from src.models.random_model import random_model
+from src.models.knn_model import knn_model
+from src.utils import response_code
+from src.models.model_utils import hstack_data
 import pandas as pd
 import matplotlib.pyplot as plt
 import re
@@ -49,8 +54,11 @@ data_text = nlp_runner(data_text)
 result = pd.merge(data, data_text, on='ID', how='left')
 result.loc[result['TEXT'].isnull(),'TEXT'] = result['Gene'] +' '+result['Variation']
 result_dict = train_test_data(result)
-train_df, cv_df, y_train, y_cv, test_df, y_test = result_dict['train_df'],result_dict['cv_df'], result_dict['y_train'],result_dict['y_cv']\
-                                                  , result_dict['test_df'], result_dict['y_test']
+
+train_df, cv_df, test_df, y_train, y_cv, y_test = result_dict['train_df'],result_dict['cv_df'], result_dict['test_df'], result_dict['y_train'],result_dict['y_cv']\
+                                                  ,  result_dict['y_test']
+
+
 print('Number of data points in train data:', train_df.shape[0])
 print('Number of data points in test data:', test_df.shape[0])
 print('Number of data points in cross validation data:', cv_df.shape[0])
@@ -66,4 +74,19 @@ plot_y_distribution(cv_class_distribution, 'cv_class_distribution')
 
 # y_test, y_cv
 random_model(test_df, cv_df, y_test, y_cv)
+
+train_gene_oho, test_gene_oho, cv_gene_oho = onehot_encode(train_df, test_df, cv_df, 'Gene')
+
+train_variation_oho, test_variation_oho, cv_variation_oho = onehot_encode(train_df, test_df, cv_df, 'Variation')
+
+train_text_oho, test_text_oho, cv_text_oho = onehot_encode_text(train_df, test_df, cv_df, 'TEXT')
+
+train_df_responce, test_df_responce, cv_df_responce = response_code(train_df, test_df, cv_df)
+
+train_gene_var_onehotCoding, test_gene_var_onehotCoding, cv_gene_var_onehotCoding = hstack_data(train_gene_oho, test_gene_oho, cv_gene_oho, train_variation_oho,
+                                                                                                test_variation_oho, cv_variation_oho, train_df, test_df, cv_df,
+                                                                                                train_text_oho, test_text_oho, cv_text_oho)
+
+knn_model(train_df_responce, test_df_responce, cv_df_responce, y_train, y_cv )
+
 print("Yeysysy bitch")

@@ -51,3 +51,4 @@ def knn_model(train_x_responseCoding, test_x_responseCoding, cv_x_responseCoding
 
     clf = KNeighborsClassifier(n_neighbors=alpha[best_alpha])
     predict_and_plot_confusion_matrix(train_x_responseCoding, train_y, cv_x_responseCoding, cv_y, clf)
+    print("KNN model completed successfully.")

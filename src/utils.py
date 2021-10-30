@@ -22,13 +22,21 @@ def plot_y_distribution(df, name):
         print('Number of data points in class', i + 1, ':', class_distribution.values[i], '(',
               np.round((class_distribution.values[i] / df.shape[0] * 100), 3), '%)')
 
-def onehot_encode(train_df, test_df, cv_df):
+def onehot_encode(train_df, test_df, cv_df, param):
     # one-hot encoding of variation feature.
     variation_vectorizer = CountVectorizer()
-    train_variation_feature_onehotCoding = variation_vectorizer.fit_transform(train_df['Variation'])
-    test_variation_feature_onehotCoding = variation_vectorizer.transform(test_df['Variation'])
-    cv_variation_feature_onehotCoding = variation_vectorizer.transform(cv_df['Variation'])
-    return (train_variation_feature_onehotCoding, test_variation_feature_onehotCoding, cv_variation_feature_onehotCoding)
+    train_variation_feature_onehotCoding = variation_vectorizer.fit_transform(train_df[param])
+    test_variation_feature_onehotCoding = variation_vectorizer.transform(test_df[param])
+    cv_variation_feature_onehotCoding = variation_vectorizer.transform(cv_df[param])
+    return train_variation_feature_onehotCoding, test_variation_feature_onehotCoding, cv_variation_feature_onehotCoding
+
+def onehot_encode_text(train_df, test_df, cv_df, param):
+    # one-hot encoding of variation feature.
+    variation_vectorizer = CountVectorizer(min_df=3)
+    train_variation_feature_onehotCoding = variation_vectorizer.fit_transform(train_df[param])
+    test_variation_feature_onehotCoding = variation_vectorizer.transform(test_df[param])
+    cv_variation_feature_onehotCoding = variation_vectorizer.transform(cv_df[param])
+    return train_variation_feature_onehotCoding, test_variation_feature_onehotCoding, cv_variation_feature_onehotCoding
 
 
 def get_gv_fea_dict(alpha, feature, df, train_df):
@@ -64,7 +72,7 @@ def response_code(train_df, test_df, cv_df):
     test_variation_feature_responseCoding = np.array(get_gv_feature(alpha, "Variation", test_df))
     # cross validation gene feature
     cv_variation_feature_responseCoding = np.array(get_gv_feature(alpha, "Variation", cv_df))
-    return (train_variation_feature_responseCoding, test_variation_feature_responseCoding, cv_variation_feature_responseCoding)
+    return train_variation_feature_responseCoding, test_variation_feature_responseCoding, cv_variation_feature_responseCoding
 
 
 def train_test_data(result):

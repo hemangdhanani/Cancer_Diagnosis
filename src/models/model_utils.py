@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.metrics._classification import accuracy_score, log_loss
 import numpy as np
+from scipy.sparse import hstack
 
 
 def plot_confusion_matrix(test_y, predict_y):
@@ -46,3 +47,19 @@ def predict_and_plot_confusion_matrix(train_x, train_y,test_x, test_y, clf):
     # calculating the number of data points that are misclassified
     print("Number of mis-classified points :", np.count_nonzero((pred_y- test_y))/test_y.shape[0])
     plot_confusion_matrix(test_y, pred_y)
+
+def hstack_data(train_gene, test_gene, cv_gene, train_variation, test_variation, cv_variation, train_df, test_df, cv_df,
+                train_text_oho, test_text_oho, cv_text_oho):
+    train_gene_var_onehotCoding = hstack((train_gene, train_variation))
+    test_gene_var_onehotCoding = hstack((test_gene, test_variation))
+    cv_gene_var_onehotCoding = hstack((cv_gene, cv_variation))
+
+    train_x_onehotCoding = hstack((train_gene_var_onehotCoding, train_text_oho)).tocsr()
+    train_y = np.array(list(train_df['Class']))
+
+    test_x_onehotCoding = hstack((test_gene_var_onehotCoding, test_text_oho)).tocsr()
+    test_y = np.array(list(test_df['Class']))
+
+    cv_x_onehotCoding = hstack((cv_gene_var_onehotCoding, cv_text_oho)).tocsr()
+    cv_y = np.array(list(cv_df['Class']))
+    return train_x_onehotCoding, test_x_onehotCoding, cv_x_onehotCoding
