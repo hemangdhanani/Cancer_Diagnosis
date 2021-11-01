@@ -62,4 +62,4 @@ def hstack_data(train_gene, test_gene, cv_gene, train_variation, test_variation,
 
     cv_x_onehotCoding = hstack((cv_gene_var_onehotCoding, cv_text_oho)).tocsr()
     cv_y = np.array(list(cv_df['Class']))
-    return train_x_onehotCoding, test_x_onehotCoding, cv_x_onehotCoding
+    return train_x_onehotCoding, test_x_onehotCoding, cv_x_onehotCoding, train_y, test_y, cv_y

@@ -5,6 +5,14 @@ from src.utils import train_test_data, plot_y_distribution
 from src.utils import onehot_encode
 from src.utils import onehot_encode_text
 from src.models.random_model import random_model
+from src.univariate.gene_feature import gene_category_plot
+from src.univariate.gene_feature import gene_feature_responsecode
+from src.univariate.gene_feature import gene_feature_oho
+from src.univariate.gene_feature import apply_model_gene_feature
+from src.univariate.variation_feature import variation_category_plot
+from src.univariate.variation_feature import variation_feature_responsecode
+from src.univariate.variation_feature import variation_feature_oho
+from src.univariate.variation_feature import apply_model_variation_feature
 from src.models.knn_model import knn_model
 from src.utils import response_code
 from src.models.model_utils import hstack_data
@@ -81,12 +89,36 @@ train_variation_oho, test_variation_oho, cv_variation_oho = onehot_encode(train_
 
 train_text_oho, test_text_oho, cv_text_oho = onehot_encode_text(train_df, test_df, cv_df, 'TEXT')
 
-train_df_responce, test_df_responce, cv_df_responce = response_code(train_df, test_df, cv_df)
+# ============================= gene_univariate==================================
 
-train_gene_var_onehotCoding, test_gene_var_onehotCoding, cv_gene_var_onehotCoding = hstack_data(train_gene_oho, test_gene_oho, cv_gene_oho, train_variation_oho,
-                                                                                                test_variation_oho, cv_variation_oho, train_df, test_df, cv_df,
-                                                                                                train_text_oho, test_text_oho, cv_text_oho)
+gene_category_plot(train_df)
 
-knn_model(train_df_responce, test_df_responce, cv_df_responce, y_train, y_cv )
+train_gene_feature_responseCoding, test_gene_feature_responseCoding, cv_gene_feature_responseCoding= gene_feature_responsecode(train_df, test_df, cv_df)
 
-print("Yeysysy bitch")
+train_gene_feature_onehotCoding, test_gene_feature_onehotCoding, cv_gene_feature_onehotCoding = gene_feature_oho(train_df, test_df, cv_df)
+
+apply_model_gene_feature(train_gene_feature_onehotCoding, cv_gene_feature_onehotCoding,test_gene_feature_onehotCoding, y_train, y_cv, y_test)
+
+# ============================= Variation_Feature==================================
+
+variation_category_plot(train_df)
+train_variation_feature_responseCoding, test_variation_feature_responseCoding, cv_variation_feature_responseCoding = variation_feature_responsecode(train_df, test_df, cv_df)
+train_variation_feature_onehotCoding, test_variation_feature_onehotCoding, cv_variation_feature_onehotCoding = variation_feature_oho(train_df, test_df, cv_df)
+apply_model_variation_feature(train_variation_feature_onehotCoding, test_variation_feature_onehotCoding, cv_variation_feature_onehotCoding, y_train, y_cv, y_test)
+
+
+# ============================= Text_Feature==================================
+
+
+
+
+
+# train_df_responce, test_df_responce, cv_df_responce = response_code(train_df, test_df, cv_df)
+#
+# train_gene_var_onehotCoding, test_gene_var_onehotCoding, cv_gene_var_onehotCoding, train_y, test_y, cv_y = hstack_data(train_gene_oho, test_gene_oho, cv_gene_oho, train_variation_oho,
+#                                                                                                 test_variation_oho, cv_variation_oho, train_df, test_df, cv_df,
+#                                                                                                 train_text_oho, test_text_oho, cv_text_oho)
+#
+# knn_model(train_df_responce, test_df_responce, cv_df_responce, train_y, cv_y, y_train, y_cv, y_test)
+#
+# print("Yeysysy bitch")

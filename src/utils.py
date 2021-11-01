@@ -39,7 +39,18 @@ def onehot_encode_text(train_df, test_df, cv_df, param):
     return train_variation_feature_onehotCoding, test_variation_feature_onehotCoding, cv_variation_feature_onehotCoding
 
 
-def get_gv_fea_dict(alpha, feature, df, train_df):
+# def get_gv_fea_dict(alpha, feature, df, train_df):
+#     value_count = train_df[feature].value_counts()
+#     gv_dict = dict()
+#     for i, denominator in value_count.items():
+#         vec = []
+#         for k in range(1, 10):
+#             cls_cnt = train_df.loc[(train_df['Class'] == k) & (train_df[feature] == i)]
+#             vec.append((cls_cnt.shape[0] + alpha * 10) / (denominator + 90 * alpha))
+#         gv_dict[i] = vec
+#     return gv_dict
+
+def get_gv_fea_dict(alpha, feature, train_df):
     value_count = train_df[feature].value_counts()
     gv_dict = dict()
     for i, denominator in value_count.items():
@@ -49,6 +60,7 @@ def get_gv_fea_dict(alpha, feature, df, train_df):
             vec.append((cls_cnt.shape[0] + alpha * 10) / (denominator + 90 * alpha))
         gv_dict[i] = vec
     return gv_dict
+
 
 def get_gv_feature(alpha, feature, df, train_df):
     gv_dict = get_gv_fea_dict(alpha, feature, df)
