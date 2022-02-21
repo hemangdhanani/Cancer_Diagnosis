@@ -4,7 +4,8 @@ from utils.data_mgmt import get_data
 from utils.data_mgmt import get_data_overview
 from utils.data_mgmt import get_eda_results
 from utils.data_mgmt import data_preprocessing
-# from utils.data_mgmt import data_vectorization_process
+from utils.data_mgmt import data_train_cv_test_split
+from utils.models.random_model import random_model_result
 # from models.naive_bayes import multinomial_naive_bayes
 # from models.logistic_regression import logistic_regression_model
 # from models.svm import svm_rbf_kernel_model
@@ -15,6 +16,8 @@ training_variants, training_text = get_data()
 get_data_overview(training_variants, training_text)
 get_eda_results(training_variants)
 train_data_clean = data_preprocessing(training_variants, training_text)
+train_df, cv_df, test_df, y_train, y_cv, y_test = data_train_cv_test_split(train_data_clean)
+random_model_result(train_df, cv_df, test_df, y_train, y_cv, y_test)
 # model_dict = {
 #     'logistic_regression': logistic_regression_model,
 #     'naive_bayes': multinomial_naive_bayes,
