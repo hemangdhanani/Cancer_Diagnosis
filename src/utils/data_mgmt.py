@@ -2,6 +2,10 @@ import pandas as pd
 # import sklearn
 from sklearn.model_selection import train_test_split
 from utils.EDA.data_eda import ylabeloverview
+from utils.EDA.data_eda import gene_feature_eda
+from utils.EDA.data_eda import variation_feature_eda
+from utils.EDA.data_eda import gene_feature_importance
+from utils.EDA.data_eda import variation_feature_importance
 from utils.Data_Preprocess.pre_processing import get_clean_training_text
 from utils.Data_vectorization.data_vectorization import drop_nans
 
@@ -27,9 +31,6 @@ def get_data_overview(training_variants, training_text):
     print(f"null data for resource set")
     print(training_text)
 
-def get_eda_results(training_variants):
-    ylabeloverview(training_variants)
-
 def data_preprocessing(training_variants, training_text):
     training_text_clean = get_clean_training_text(training_text)
     print(training_text_clean.columns)
@@ -49,3 +50,10 @@ def data_train_cv_test_split(train_data_clean):
     print('Number of data points in test data:', test_df.shape[0])
     print('Number of data points in cross validation data:', cv_df.shape[0])
     return train_df, cv_df, test_df, y_train, y_cv, y_test
+
+def get_eda_results(training_variants, train_df, cv_df, test_df, y_train, y_cv, y_test):
+    ylabeloverview(training_variants)
+    gene_feature_eda(train_df)
+    gene_feature_importance(train_df, cv_df, test_df, y_train, y_cv, y_test)
+    variation_feature_eda(train_df)
+    variation_feature_importance(train_df, cv_df, test_df, y_train, y_cv, y_test)    

@@ -14,10 +14,11 @@ from utils.models.random_model import random_model_result
 
 training_variants, training_text = get_data()
 get_data_overview(training_variants, training_text)
-get_eda_results(training_variants)
 train_data_clean = data_preprocessing(training_variants, training_text)
 train_df, cv_df, test_df, y_train, y_cv, y_test = data_train_cv_test_split(train_data_clean)
 random_model_result(train_df, cv_df, test_df, y_train, y_cv, y_test)
+get_eda_results(training_variants, train_df, cv_df, test_df, y_train, y_cv, y_test)
+
 # model_dict = {
 #     'logistic_regression': logistic_regression_model,
 #     'naive_bayes': multinomial_naive_bayes,
