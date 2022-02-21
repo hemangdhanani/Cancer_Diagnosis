@@ -1,0 +1,11 @@
+numpy
+matplotlib
+pandas
+nltk
+seaborn
+sklearn
+PyYAML
+scipy
+flask
+joblib
+mlxtend

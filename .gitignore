@@ -127,7 +127,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.vscode/
+.idea/
 
 .msk-redefining-cancer-treatment/
 .training_text
 .training_variants
+
+# .pkl files
+.pkl
+**/*.pkl
