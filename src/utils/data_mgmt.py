@@ -8,7 +8,14 @@ from utils.EDA.data_eda import gene_feature_importance
 from utils.EDA.data_eda import variation_feature_importance
 from utils.Data_Preprocess.pre_processing import get_clean_training_text
 from utils.Data_vectorization.data_vectorization import drop_nans
-
+from utils.Data_vectorization.data_vectorization import gene_feature_oho
+from utils.Data_vectorization.data_vectorization import variation_feature_oho
+from utils.Data_vectorization.data_vectorization import text_feature_oho
+from utils.Data_vectorization.data_vectorization import feature_hstack
+from utils.Data_vectorization.data_vectorization import gene_feature_responseCoding
+from utils.Data_vectorization.data_vectorization import variation_feature_responseCoding
+from utils.Data_vectorization.data_vectorization import text_feature_responseCoding
+from utils.Data_vectorization.data_vectorization import feature_hstack_responsecode
 
 def get_data():
     training_variants = pd.read_csv(r"C:\Users\Hemang\Desktop\DataSet\Cancer_dataset\training_variants.csv")
@@ -57,3 +64,17 @@ def get_eda_results(training_variants, train_df, cv_df, test_df, y_train, y_cv, 
     gene_feature_importance(train_df, cv_df, test_df, y_train, y_cv, y_test)
     variation_feature_eda(train_df)
     variation_feature_importance(train_df, cv_df, test_df, y_train, y_cv, y_test)    
+
+def data_vectorization_process(train_df, test_df, cv_df, y_train, y_cv, y_test):
+    train_gene_feature_onehotCoding, test_gene_feature_onehotCoding, cv_gene_feature_onehotCoding = gene_feature_oho(train_df, test_df, cv_df)
+    train_variation_feature_onehotCoding, test_variation_feature_onehotCoding, cv_variation_feature_onehotCoding = variation_feature_oho(train_df, test_df, cv_df)
+    train_text_feature_onehotCoding, test_text_feature_onehotCoding, cv_text_feature_onehotCoding = text_feature_oho(train_df, test_df, cv_df)
+    train_x_onehotCoding, test_x_onehotCoding, cv_x_onehotCoding, train_y, test_y, cv_y = feature_hstack(train_gene_feature_onehotCoding, test_gene_feature_onehotCoding, cv_gene_feature_onehotCoding,train_variation_feature_onehotCoding, test_variation_feature_onehotCoding, cv_variation_feature_onehotCoding, train_text_feature_onehotCoding, test_text_feature_onehotCoding, cv_text_feature_onehotCoding,train_df, test_df, cv_df) 
+    return train_x_onehotCoding, test_x_onehotCoding, cv_x_onehotCoding, train_y, test_y, cv_y 
+
+def get_feature_responsecoding(train_df, test_df, cv_df):
+    train_gene_feature_responseCoding, test_gene_feature_responseCoding, cv_gene_feature_responseCoding = gene_feature_responseCoding(train_df, test_df, cv_df)
+    train_variation_feature_responseCoding, test_variation_feature_responseCoding, cv_variation_feature_responseCoding = variation_feature_responseCoding(train_df, test_df, cv_df)
+    train_text_feature_responseCoding, cv_text_feature_responseCoding, test_text_feature_responseCoding  = text_feature_responseCoding(train_df, test_df, cv_df)
+    train_x_responseCoding, cv_x_responseCoding, test_x_responseCoding, train_y, test_y, cv_y = feature_hstack_responsecode(train_gene_feature_responseCoding, test_gene_feature_responseCoding, cv_gene_feature_responseCoding, train_variation_feature_responseCoding, test_variation_feature_responseCoding, cv_variation_feature_responseCoding, train_text_feature_responseCoding, cv_text_feature_responseCoding, test_text_feature_responseCoding,train_df, test_df, cv_df)
+    return train_x_responseCoding, cv_x_responseCoding, test_x_responseCoding, train_y, test_y, cv_y

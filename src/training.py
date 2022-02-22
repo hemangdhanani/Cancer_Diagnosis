@@ -5,7 +5,11 @@ from utils.data_mgmt import get_data_overview
 from utils.data_mgmt import get_eda_results
 from utils.data_mgmt import data_preprocessing
 from utils.data_mgmt import data_train_cv_test_split
+from utils.data_mgmt import data_vectorization_process
+from utils.data_mgmt import get_feature_responsecoding
 from utils.models.random_model import random_model_result
+from utils.models.naive_bayes import naive_bayes_model
+from utils.models.knn_model import knn_model_implementation
 # from models.naive_bayes import multinomial_naive_bayes
 # from models.logistic_regression import logistic_regression_model
 # from models.svm import svm_rbf_kernel_model
@@ -18,7 +22,14 @@ train_data_clean = data_preprocessing(training_variants, training_text)
 train_df, cv_df, test_df, y_train, y_cv, y_test = data_train_cv_test_split(train_data_clean)
 random_model_result(train_df, cv_df, test_df, y_train, y_cv, y_test)
 get_eda_results(training_variants, train_df, cv_df, test_df, y_train, y_cv, y_test)
+train_x_onehotCoding, test_x_onehotCoding, cv_x_onehotCoding, train_y, test_y, cv_y = data_vectorization_process(train_df, test_df, cv_df, y_train, y_cv, y_test)
+train_x_responseCoding, cv_x_responseCoding, test_x_responseCoding, train_y, test_y, cv_y = get_feature_responsecoding(train_df, test_df, cv_df)
 
+naive_bayes_model(train_x_onehotCoding, cv_x_onehotCoding, test_x_onehotCoding, train_y, test_y, cv_y, y_train, y_cv, y_test)
+
+knn_model_implementation(train_x_responseCoding, cv_x_responseCoding, test_x_responseCoding, train_y, test_y, cv_y, y_train, y_cv, y_test)
+# train_x_onehotCoding, cv_x_onehotCoding, test_x_onehotCoding, train_y, test_y, cv_y, y_train, y_cv, y_test
+print("untill its done....")    
 # model_dict = {
 #     'logistic_regression': logistic_regression_model,
 #     'naive_bayes': multinomial_naive_bayes,
