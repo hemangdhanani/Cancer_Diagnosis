@@ -10,6 +10,7 @@ from utils.data_mgmt import get_feature_responsecoding
 from utils.models.random_model import random_model_result
 from utils.models.naive_bayes import naive_bayes_model
 from utils.models.knn_model import knn_model_implementation
+from utils.models.linear_svm import linear_svm_model
 # from models.naive_bayes import multinomial_naive_bayes
 # from models.logistic_regression import logistic_regression_model
 # from models.svm import svm_rbf_kernel_model
@@ -28,6 +29,8 @@ train_x_responseCoding, cv_x_responseCoding, test_x_responseCoding, train_y, tes
 naive_bayes_model(train_x_onehotCoding, cv_x_onehotCoding, test_x_onehotCoding, train_y, test_y, cv_y, y_train, y_cv, y_test)
 
 knn_model_implementation(train_x_responseCoding, cv_x_responseCoding, test_x_responseCoding, train_y, test_y, cv_y, y_train, y_cv, y_test)
+
+linear_svm_model(train_x_onehotCoding, cv_x_onehotCoding, test_x_onehotCoding, train_y, test_y, cv_y, y_train, y_cv, y_test )
 # train_x_onehotCoding, cv_x_onehotCoding, test_x_onehotCoding, train_y, test_y, cv_y, y_train, y_cv, y_test
 print("untill its done....")    
 # model_dict = {
